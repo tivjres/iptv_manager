@@ -1,0 +1,73 @@
+AllCops:
+  Exclude:
+    - "vendor/**/*"
+    - 'script/**/*'
+    - 'bin/**/*'
+    - 'db/migrate/**'
+  CacheRootDirectory: tmp/cache/rubocop_cache/
+  TargetRubyVersion: 2.6.3
+Rails:
+  Enabled: true
+Documentation:
+  Enabled: false
+
+Metrics/LineLength:
+  Max: 120
+
+Metrics/BlockLength:
+  Enabled: false
+
+Style/CommentedKeyword:
+  Enabled: false
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+  IndentationWidth: 2
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+
+Rails/HttpPositionalArguments:
+  Enabled: false
+
+Rails/OutputSafety:
+  Enabled: false
+
+Rails/SkipsModelValidations:
+  Enabled: false
+
+Naming/UncommunicativeMethodParamName:
+  Enabled: false
+
+EndOfLine:
+  Enabled: false
+
+Naming/MemoizedInstanceVariableName:
+  Enabled: false
+
+Lint/SplatKeywordArguments:
+  Enabled: false
+
+Rails/HasManyOrHasOneDependent:
+  Enabled: false
+
+Rails/InverseOf:
+  Enabled: false
+
+Style/MethodMissingSuper:
+  Enabled: false
+
+Style/MissingRespondToMissing:
+  Enabled: false
+
+Lint/SafeNavigationChain:
+  Enabled: false
+
+Security/Open:
+  Enabled: false
+Rails/UnknownEnv:
+  Environments:
+    - production
+    - development
+    - test

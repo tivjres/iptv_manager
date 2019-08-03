@@ -1,0 +1,15 @@
+%p#notice= notice
+
+%p
+  %b Url:
+  = @channel.url
+%p
+  %b Name:
+  = @channel.name
+%p
+  %b Status:
+  = @channel.status
+
+= link_to 'Edit', edit_channel_path(@channel)
+\|
+= link_to 'Back', channels_path
