@@ -11,6 +11,7 @@ module IptvManager
     config.load_defaults 5.2
     Dotenv.load(".env_files/.#{Rails.env}.env")
     config.active_record.schema_format = :sql
+    config.autoload_paths << Rails.root.join('lib')
 
     config.generators do |g|
       g.orm                 :active_record

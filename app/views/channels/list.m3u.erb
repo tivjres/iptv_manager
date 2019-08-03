@@ -1,0 +1,6 @@
+#EXTM3U
+<% Channel.all.each do |ch| %>
+<%= ch.name %>
+<%= ch.group.name %>
+<%= ch.url %>
+<% end %>
