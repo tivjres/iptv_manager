@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
-  resources :channels
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  resources :groups
+  resources :channels do
+    collection do
+      post 'attach_lists', to: 'channels#attach_lists'
+    end
+  end
 end

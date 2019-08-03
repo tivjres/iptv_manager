@@ -21,6 +21,25 @@ class ChannelsController < ApplicationController
   def edit
   end
 
+  def attach_lists
+    @result = { success: false, all: 0, new: 0, files: params[:iptv_lists]&.size }
+    params[:iptv_lists]&.each do |file|
+      File.read(file.path).split("\n")[1..-1].each_slice(3).to_a.each do |channel|
+        next if channel.size != 3
+        @result[:all] += 1
+        Channel.find_or_create_by(url: channel.last) do |ch|
+          @result[:new] += 1
+          ch.status = 0
+          ch.name = channel.first
+          ch.group = Group.find_or_create_by(name: channel.fetch(1))
+        end
+      end
+      @result[:success] = true
+    end
+    @channels = Channel.all
+    render :index
+  end
+
   # POST /channels
   # POST /channels.json
   def create
@@ -62,13 +81,13 @@ class ChannelsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_channel
-      @channel = Channel.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_channel
+    @channel = Channel.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def channel_params
-      params.require(:channel).permit(:url, :name, :status)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def channel_params
+    params.require(:channel).permit(:url, :name, :status)
+  end
 end
