@@ -8,12 +8,15 @@ Bundler.require(*Rails.groups)
 
 module IptvManager
   class Application < Rails::Application
-    # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.2
+    Dotenv.load(".env_files/.#{Rails.env}.env")
+    config.active_record.schema_format = :sql
 
-    # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration can go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded after loading
-    # the framework and any gems in your application.
+    config.generators do |g|
+      g.orm                 :active_record
+      g.template_engine     :haml
+      g.javascript_engine   :js
+      g.scaffold_stylesheet false
+    end
   end
 end
