@@ -22,22 +22,39 @@ class ChannelsController < ApplicationController
   end
 
   def attach_lists
+    # TODO mode this logic to 2 other method `prepare_channels` && `create_channels`
     @result = { success: false, all: 0, new: 0, files: params[:iptv_lists]&.size }
     params[:iptv_lists]&.each do |file|
-      File.read(file.path).split("\n")[1..-1].each_slice(3).to_a.each do |channel|
-        next if channel.size != 3
-        @result[:all] += 1
-        Channel.find_or_create_by(url: channel.last) do |ch|
-          @result[:new] += 1
-          ch.status = 0
-          ch.name = channel.first
-          ch.group = Group.find_or_create_by(name: channel.fetch(1))
+      channel = { name: nil, group: nil, url: nil }
+      File.read(file.path).split("\n").each do |line|
+        if line.start_with?('#EXTINF')
+          channel[:name] = line
+        elsif line.start_with?('#EXTGRP')
+          channel[:group] = line
+        elsif line.start_with?('http')
+          channel[:url] = line
+        end
+        if channel[:name].present? && channel[:group].present? && channel[:url].present?
+          @result[:all] += 1
+          Channel.find_or_create_by(url: channel[:url]) do |ch|
+            @result[:new] += 1
+            ch.status = 0
+            ch.name = channel[:name]
+            ch.group = Group.find_or_create_by(name: channel[:group])
+            channel = { name: nil, group: nil, url: nil }
+          end
         end
       end
       @result[:success] = true
     end
     @channels = Channel.all
     render :index
+  end
+
+  def list
+    respond_to do |format|
+      format.m3u
+    end
   end
 
   # POST /channels

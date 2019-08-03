@@ -13,6 +13,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'haml-rails'
 gem 'dotenv-rails'
 gem 'colorize'
+gem 'faraday'
 
 gem 'bootsnap', '>= 1.1.0', require: false
 
