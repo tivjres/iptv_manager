@@ -14,6 +14,7 @@ gem 'haml-rails'
 gem 'dotenv-rails'
 gem 'colorize'
 gem 'faraday'
+gem 'devise'
 
 gem 'bootsnap', '>= 1.1.0', require: false
 
