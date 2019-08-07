@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  list: one
+  position: 1
+  channel: one
+
+two:
+  user: two
+  list: two
+  position: 1
+  channel: two

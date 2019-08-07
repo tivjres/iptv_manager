@@ -105,6 +105,72 @@ ALTER SEQUENCE public.groups_id_seq OWNED BY public.groups.id;
 
 
 --
+-- Name: list_items; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.list_items (
+    id bigint NOT NULL,
+    user_id bigint,
+    list_id bigint,
+    "position" integer,
+    channel_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: list_items_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.list_items_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: list_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.list_items_id_seq OWNED BY public.list_items.id;
+
+
+--
+-- Name: lists; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.lists (
+    id bigint NOT NULL,
+    name character varying,
+    user_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: lists_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.lists_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: lists_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.lists_id_seq OWNED BY public.lists.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -163,6 +229,20 @@ ALTER TABLE ONLY public.groups ALTER COLUMN id SET DEFAULT nextval('public.group
 
 
 --
+-- Name: list_items id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.list_items ALTER COLUMN id SET DEFAULT nextval('public.list_items_id_seq'::regclass);
+
+
+--
+-- Name: lists id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.lists ALTER COLUMN id SET DEFAULT nextval('public.lists_id_seq'::regclass);
+
+
+--
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -194,6 +274,22 @@ ALTER TABLE ONLY public.groups
 
 
 --
+-- Name: list_items list_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.list_items
+    ADD CONSTRAINT list_items_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: lists lists_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.lists
+    ADD CONSTRAINT lists_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -217,6 +313,34 @@ CREATE INDEX index_channels_on_group_id ON public.channels USING btree (group_id
 
 
 --
+-- Name: index_list_items_on_channel_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_list_items_on_channel_id ON public.list_items USING btree (channel_id);
+
+
+--
+-- Name: index_list_items_on_list_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_list_items_on_list_id ON public.list_items USING btree (list_id);
+
+
+--
+-- Name: index_list_items_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_list_items_on_user_id ON public.list_items USING btree (user_id);
+
+
+--
+-- Name: index_lists_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_lists_on_user_id ON public.lists USING btree (user_id);
+
+
+--
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -231,11 +355,43 @@ CREATE UNIQUE INDEX index_users_on_reset_password_token ON public.users USING bt
 
 
 --
+-- Name: list_items fk_rails_12b8df7bb8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.list_items
+    ADD CONSTRAINT fk_rails_12b8df7bb8 FOREIGN KEY (list_id) REFERENCES public.lists(id);
+
+
+--
 -- Name: channels fk_rails_8011c05949; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.channels
     ADD CONSTRAINT fk_rails_8011c05949 FOREIGN KEY (group_id) REFERENCES public.groups(id);
+
+
+--
+-- Name: lists fk_rails_d6cf4279f7; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.lists
+    ADD CONSTRAINT fk_rails_d6cf4279f7 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: list_items fk_rails_dc5fd09354; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.list_items
+    ADD CONSTRAINT fk_rails_dc5fd09354 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: list_items fk_rails_ec1d9f7b8c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.list_items
+    ADD CONSTRAINT fk_rails_ec1d9f7b8c FOREIGN KEY (channel_id) REFERENCES public.channels(id);
 
 
 --
@@ -248,6 +404,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190803150719'),
 ('20190803205733'),
 ('20190803205752'),
-('20190807162556');
+('20190807162556'),
+('20190807163237'),
+('20190807163708');
 
 
